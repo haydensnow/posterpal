@@ -1,0 +1,9 @@
+{
+  "process": "/path/to/process/directory",
+  "backup": "/path/to/backup/directory",
+  "shows": "/path/to/shows/directory",
+  "movies": "/path/to/movies/directory",
+  "assets": "/path/to/assets/directory",
+  "pmm_assets": false,
+  "create_backup": true
+}
