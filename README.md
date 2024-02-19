@@ -2,11 +2,6 @@
 
 PosterPal is a simple Python script for organizing and properly renaming media artwork downloaded from sites like The Poster Database, MediUX, and more. In addition to organizing, it also optimizes/compresses the images to reduce file size. The script currently handles movies, TV shows, and episode title cards.
 
-
-https://github.com/redheadjedi/posterpal/assets/67611787/b4517922-4b89-4ff8-981a-0b01392daf25
-
-
-
 ## ⚠️ Disclaimer
 
 I am by no means a Python expert, and this script can surely be improved and made more efficient. While it works quite well in my limited testing, this was created with my minimal Python knowledge, some help from GPT, and lots of trial and error. If you have any ideas or would like to contribute/improve it in any way, please let me know!
