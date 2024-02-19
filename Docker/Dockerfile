@@ -17,10 +17,6 @@ RUN apt-get update && apt-get install -y \
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Ensure you list all the required packages in requirements.txt:
-# fuzzywuzzy
-# Pillow
-
 # Environment variables with default values
 ENV PROCESS=/data/processing \
     BACKUP=/data/backup \
