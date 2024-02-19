@@ -1,6 +1,11 @@
-# PosterPal
+# 🎨 PosterPal
 
 PosterPal is a simple Python script for organizing and properly renaming media artwork downloaded from sites like The Poster Database, MediUX, and more. In addition to organizing, it also optimizes/compresses the images to reduce file size. The script currently handles movies, TV shows, and episode title cards.
+
+
+https://github.com/redheadjedi/posterpal/assets/67611787/b4517922-4b89-4ff8-981a-0b01392daf25
+
+
 
 ## ⚠️ Disclaimer
 
@@ -8,32 +13,55 @@ I am by no means a Python expert, and this script can surely be improved and mad
 
 Keep in mind that this script is currently set to overwrite any existing image files, so I recommend testing it with a test folder using your file naming scheme to make sure it's working properly. Proceed at your own risk.
 
-## Setup and Configuration
+## 🛠️ Setup and Configuration
 
-### 1. Install the required packages
+1. **Install the required packages**
 
-```bash
-pip install -r requirements.txt
+   Run the following command to install the necessary Python packages:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Configuration**
+
+   - **Edit `config.json`**: Update this file with your specific directories and preferences.
+   
+     - `process`: Directory for downloads/posters. Cleared with each script run.
+     - `movies`: Directory for movie storage.
+     - `shows`: Directory for TV show storage.
+     - `backup`: Directory for backups (if enabled).
+     - `PMM_assets`: `true`/`false` for using a separate assets folder.
+
+3. **Usage**
+
+   Place the images, ZIPs, etc., you wish to organize into the `/process` folder and run the script. A log file will be created automatically.
+
+## 🐳 Docker Compose Configuration
+
+For Docker users, below is a Docker Compose configuration for setting up PosterPal. Remember to update the placeholders with your actual paths.
+
+```yaml
+version: '3.8'
+
+services:
+  posterpal:
+    container_name: posterpal
+    image: redheadjedi/posterpal:latest
+    environment:
+      PROCESS: /data/processing
+      BACKUP: /data/backup
+      SHOWS: /data/shows
+      MOVIES: /data/movies
+      ASSETS: /data/assets
+      PMM_ASSETS: "false"
+      CREATE_BACKUP: "true"
+    volumes:
+      - "/local/path/to/processing:/data/processing"
+      - "/local/path/to/tv/shows:/data/shows"
+      - "/local/path/to/movies:/data/movies"
+      - "/local/path/to/backup:/data/backup"
+      - "/local/path/to/assets:/data/assets" # Update as needed
+      - "/local/path/to/logs:/var/log/posterpal" # Optional for external logging
+    restart: unless-stopped
 ```
-
-### 2. Edit the `config.json` file with your directories and preferences
-
-#### Main Directories
-
-- `process`: This is where you will place all of your downloads/posters from TPDb, MediUX, etc. This folder will be cleared every time you run the script.
-- `movies`: This should be where you store all of your movies. Ideally, the folders should contain the title and year.
-- `shows`: This should be where you store all of your TV shows.
-
-#### Backup (optional)
-
-- `create_backup`: `true` or `false`. Used for toggling backups.
-- `backup`: This is where it will place backups of everything you drop into the `process` folder.
-
-#### Plex Meta Manager Assets (optional)
-
-- `PMM_assets`: `true` or `false`. Set to `true` if you prefer to use a separate "assets" folder for your artwork instead of storing it alongside the media itself. Please keep in mind that the script does not currently create directories, so they must already exist before running the script.
-- `assets`: This should be your PMM assets folder.
-
-### 3. Drop the images, ZIPs, etc., you want to organize into the `/process` folder, and run the script! A log file will be created automatically.
-
-**Note:** This script uses a fuzzy search to identify matches. This can be adjusted in the script itself.
