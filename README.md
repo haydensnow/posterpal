@@ -31,32 +31,3 @@ Keep in mind that this script is currently set to overwrite any existing image f
 3. **Usage**
 
    Place the images, ZIPs, etc., you wish to organize into the `/process` folder and run the script. A log file will be created automatically.
-
-## 🐳 Docker Compose Configuration
-
-For Docker users, below is a Docker Compose configuration for setting up PosterPal. Remember to update the placeholders with your actual paths.
-
-```yaml
-version: '3.8'
-
-services:
-  posterpal:
-    container_name: posterpal
-    image: redheadjedi/posterpal:latest
-    environment:
-      PROCESS: /data/processing
-      BACKUP: /data/backup
-      SHOWS: /data/shows
-      MOVIES: /data/movies
-      ASSETS: /data/assets
-      PMM_ASSETS: "false"
-      CREATE_BACKUP: "true"
-    volumes:
-      - "/local/path/to/processing:/data/processing"
-      - "/local/path/to/tv/shows:/data/shows"
-      - "/local/path/to/movies:/data/movies"
-      - "/local/path/to/backup:/data/backup"
-      - "/local/path/to/assets:/data/assets" # Update as needed
-      - "/local/path/to/logs:/var/log/posterpal" # Optional for external logging
-    restart: unless-stopped
-```
