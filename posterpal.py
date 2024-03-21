@@ -139,7 +139,7 @@ def unzip_files(source_dir):
             os.remove(item_path)
             logging.info(f"Unzipped '{item}'.")
 
-def clear_processing_directory(directory):
+def clear_directory(directory):
     for root, dirs, files in os.walk(directory, topdown=False):
         for name in files:
             file_path = os.path.join(root, name)
@@ -147,7 +147,7 @@ def clear_processing_directory(directory):
         for name in dirs:
             dir_path = os.path.join(root, name)
             os.rmdir(dir_path)
-    logging.info("Cleared processing directory.")
+    logging.info(f"Cleared {directory}.")
 
 def rename_episode_images(shows_dir):
     video_extensions = {'.mkv', '.mp4', '.avi', '.mov'}
@@ -166,7 +166,7 @@ def rename_episode_images(shows_dir):
 
 def process_files(config):
     logging.info("Starting file processing.")
-    process = config['process']
+    process_dir = config['process']
     backup_dir = config['backup']
     shows_dir = config['shows']
     movies_dir = config['movies']
@@ -175,16 +175,16 @@ def process_files(config):
     backup_bool = config['create_backup']
 
     if backup_bool == True:
-        backup_files(process, backup_dir)
+        backup_files(process_dir, backup_dir)
     
-    unzip_files(process)
+    unzip_files(process_dir)
 
     if assets_bool == False:
         shows_set = scan_directories(shows_dir)
         movies_set = scan_directories(movies_dir)
-        compress_and_convert_images(process)
+        compress_and_convert_images(process_dir)
 
-        for root, _, files in os.walk(process):
+        for root, _, files in os.walk(process_dir):
             for file in files:
                 if file.startswith('._') or file == '.DS_Store':
                     continue
@@ -196,14 +196,14 @@ def process_files(config):
                 except TypeError:
                     continue
 
-        clear_processing_directory(process)
+        clear_directory(process_dir)
         rename_episode_images(shows_dir)
         logging.info("Finished processing all files.")
     else:
         assets_set = scan_directories(assets_dir)
-        compress_and_convert_images(process)
+        compress_and_convert_images(process_dir)
 
-        for root, _, files in os.walk(process):
+        for root, _, files in os.walk(process_dir):
             for file in files:
                 if file.startswith('._') or file == '.DS_Store':
                     continue
@@ -215,7 +215,7 @@ def process_files(config):
                 except TypeError:
                     continue
 
-        clear_processing_directory(process)
+        clear_directory(process_dir)
         rename_episode_images(assets_set)
         logging.info("Finished processing all files.")
 
