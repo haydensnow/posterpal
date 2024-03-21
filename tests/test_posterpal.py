@@ -16,8 +16,8 @@ def test_teds():
 
     for i in range(10): # Was successful at 50 but reduced for time
         # Move zip files to copy
-        shutil.copy2("tests/zips/Ted Tests.zip", "tests/process/Ted Tests.zip")
-        shutil.copy2("tests/zips/Ted Lasso Tests.zip", "tests/process/Ted Lasso Tests.zip")
+        shutil.copy2("./tests/zips/Ted Tests.zip", "./tests/process/Ted Tests.zip")
+        shutil.copy2("./tests/zips/Ted Lasso Tests.zip", "./tests/process/Ted Lasso Tests.zip")
         
         # Run primary function in posterpal
         process_files(test_config)
