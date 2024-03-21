@@ -12,8 +12,7 @@ from PIL import Image
 log_filename = 'log.txt'
 logging.basicConfig(filename=log_filename, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
-def load_config():
-    config_filename = 'config.json'
+def load_config(config_filename):
     script_dir = os.path.dirname(os.path.realpath(__file__))
     config_path = os.path.join(script_dir, config_filename)
     with open(config_path, 'r') as config_file:
@@ -32,7 +31,7 @@ def determine_category(name, shows_set, movies_set):
 
 def find_closest_directory_name(target, directory_set):
     target = target.lower()
-    closest, score = process.extractOne(target, directory_set, score_cutoff=85)
+    closest, score = process.extractOne(target, directory_set, score_cutoff=90)
     return closest if closest and score > 85 else None
 
 def process_file_name(file_name, shows_dir, movies_dir, shows_set, movies_set):
@@ -48,7 +47,7 @@ def process_file_name(file_name, shows_dir, movies_dir, shows_set, movies_set):
     b_match = backdrop_pattern.match(file_name)
 
     if se_match or s_match or p_match or b_match:
-        name = (se_match or s_match or p_match or b_match).group(1).strip()
+        name = (se_match or s_match or p_match or b_match).group().strip()
         category = determine_category(name, shows_set, movies_set)
         
         if category is None:
@@ -222,7 +221,7 @@ def process_files(config):
 
 if __name__ == "__main__":
     try:
-        config = load_config()
+        config = load_config("config.json")
         process_files(config)
         logging.info("Script completed successfully.")
     except Exception as e:

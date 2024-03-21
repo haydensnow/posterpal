@@ -1,0 +1,9 @@
+{
+    "process": "./test/process",
+    "backup": "./test/backup",
+    "shows": "./test/shows",
+    "movies": "./test/movies",
+    "assets": "./test/assets",
+    "pmm_assets": false,
+    "create_backup": true
+  }
