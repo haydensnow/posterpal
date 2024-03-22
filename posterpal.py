@@ -12,8 +12,7 @@ from PIL import Image
 log_filename = 'log.txt'
 logging.basicConfig(filename=log_filename, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
-def load_config():
-    config_filename = 'config.json'
+def load_config(config_filename):
     script_dir = os.path.dirname(os.path.realpath(__file__))
     config_path = os.path.join(script_dir, config_filename)
     with open(config_path, 'r') as config_file:
@@ -32,7 +31,7 @@ def determine_category(name, shows_set, movies_set):
 
 def find_closest_directory_name(target, directory_set):
     target = target.lower()
-    closest, score = process.extractOne(target, directory_set, score_cutoff=85)
+    closest, score = process.extractOne(target, directory_set, score_cutoff=90)
     return closest if closest and score > 85 else None
 
 def process_file_name(file_name, shows_dir, movies_dir, shows_set, movies_set):
@@ -48,7 +47,7 @@ def process_file_name(file_name, shows_dir, movies_dir, shows_set, movies_set):
     b_match = backdrop_pattern.match(file_name)
 
     if se_match or s_match or p_match or b_match:
-        name = (se_match or s_match or p_match or b_match).group(1).strip()
+        name = (se_match or s_match or p_match or b_match).group().strip()
         category = determine_category(name, shows_set, movies_set)
         
         if category is None:
@@ -140,7 +139,7 @@ def unzip_files(source_dir):
             os.remove(item_path)
             logging.info(f"Unzipped '{item}'.")
 
-def clear_processing_directory(directory):
+def clear_directory(directory):
     for root, dirs, files in os.walk(directory, topdown=False):
         for name in files:
             file_path = os.path.join(root, name)
@@ -148,7 +147,7 @@ def clear_processing_directory(directory):
         for name in dirs:
             dir_path = os.path.join(root, name)
             os.rmdir(dir_path)
-    logging.info("Cleared processing directory.")
+    logging.info(f"Cleared {directory}.")
 
 def rename_episode_images(shows_dir):
     video_extensions = {'.mkv', '.mp4', '.avi', '.mov'}
@@ -167,7 +166,7 @@ def rename_episode_images(shows_dir):
 
 def process_files(config):
     logging.info("Starting file processing.")
-    process = config['process']
+    process_dir = config['process']
     backup_dir = config['backup']
     shows_dir = config['shows']
     movies_dir = config['movies']
@@ -176,16 +175,16 @@ def process_files(config):
     backup_bool = config['create_backup']
 
     if backup_bool == True:
-        backup_files(process, backup_dir)
+        backup_files(process_dir, backup_dir)
     
-    unzip_files(process)
+    unzip_files(process_dir)
 
     if assets_bool == False:
         shows_set = scan_directories(shows_dir)
         movies_set = scan_directories(movies_dir)
-        compress_and_convert_images(process)
+        compress_and_convert_images(process_dir)
 
-        for root, _, files in os.walk(process):
+        for root, _, files in os.walk(process_dir):
             for file in files:
                 if file.startswith('._') or file == '.DS_Store':
                     continue
@@ -197,14 +196,14 @@ def process_files(config):
                 except TypeError:
                     continue
 
-        clear_processing_directory(process)
+        clear_directory(process_dir)
         rename_episode_images(shows_dir)
         logging.info("Finished processing all files.")
     else:
         assets_set = scan_directories(assets_dir)
-        compress_and_convert_images(process)
+        compress_and_convert_images(process_dir)
 
-        for root, _, files in os.walk(process):
+        for root, _, files in os.walk(process_dir):
             for file in files:
                 if file.startswith('._') or file == '.DS_Store':
                     continue
@@ -216,13 +215,13 @@ def process_files(config):
                 except TypeError:
                     continue
 
-        clear_processing_directory(process)
+        clear_directory(process_dir)
         rename_episode_images(assets_set)
         logging.info("Finished processing all files.")
 
 if __name__ == "__main__":
     try:
-        config = load_config()
+        config = load_config("config.json")
         process_files(config)
         logging.info("Script completed successfully.")
     except Exception as e:
