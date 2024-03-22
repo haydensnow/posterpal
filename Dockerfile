@@ -5,7 +5,8 @@ FROM python:3.9-slim
 WORKDIR /usr/src/app
 
 # Copy the current directory contents into the container at /usr/src/app
-COPY . /usr/src/app
+COPY posterpal.py /usr/src/app
+COPY requirements.txt /usr/src/app
 
 # Install build dependencies for Pillow and general setup
 RUN apt-get update && apt-get install -y \
@@ -30,7 +31,7 @@ ENV PROCESS=/data/processing \
 RUN mkdir -p /var/log/posterpal
 
 # Volumes for external data
-VOLUME ["/data"]
+# VOLUME ["/data"]
 
 # Run posterpal.py when the container launches
 CMD ["python", "./posterpal.py"]
