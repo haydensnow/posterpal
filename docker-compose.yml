@@ -5,4 +5,8 @@ services:
       context: './'
       dockerfile: Dockerfile
     volumes:
-      - ./data:/data
+      - ./data/processing:/data/processing
+      - ./data/assets:/data/assets
+      - ./data/backup:/data/backup
+      - PATH_TO_MOVIES:/data/movies
+      - PATH_TO_TV:/data/tv
