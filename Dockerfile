@@ -18,9 +18,9 @@ RUN apt-get update && apt-get install -y \
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN mkdir /data/assets
-RUN mkdir /data/backup
-RUN mkdir /data/processing
+RUN mkdir -p /data/assets
+RUN mkdir -p /data/backup
+RUN mkdir -p /data/processing
 
 # Environment variables with default values
 ENV PROCESS=/data/processing \
@@ -28,14 +28,11 @@ ENV PROCESS=/data/processing \
     SHOWS=/data/shows \
     MOVIES=/data/movies \
     ASSETS=/data/assets \
-    PMM_ASSETS=false \
-    CREATE_BACKUP=true
+    PMM_ASSETS=False \
+    CREATE_BACKUP=True
 
 # Make log directory
 RUN mkdir -p /var/log/posterpal
 
-# Volumes for external data
-# VOLUME ["/data"]
-
 # Run posterpal.py when the container launches
-CMD ["python", "./posterpal.py"]
+CMD ["python", "-u", "posterpal.py"]

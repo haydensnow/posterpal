@@ -3,6 +3,7 @@ import shutil
 import zipfile
 import re
 import json
+import sys
 from datetime import datetime
 from fuzzywuzzy import process
 import logging
@@ -11,12 +12,27 @@ from PIL import Image
 # Set up logging
 log_filename = 'log.txt'
 logging.basicConfig(filename=log_filename, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
+
 
 def load_config(config_filename):
     script_dir = os.path.dirname(os.path.realpath(__file__))
     config_path = os.path.join(script_dir, config_filename)
-    with open(config_path, 'r') as config_file:
-        return json.load(config_file)
+    if os.path.isfile(config_path):
+        with open(config_path, 'r') as config_file:
+            return json.load(config_file)
+    else:
+       config = {
+            "process": os.environ["PROCESS"],
+            "backup": os.environ["BACKUP"],
+            "movies": os.environ["MOVIES"],
+            "shows": os.environ["SHOWS"],
+            "assets": os.environ["ASSETS"],
+            "pmm_assets": os.environ["PMM_ASSETS"].lower() == "true",
+            "create_backup": os.environ["CREATE_BACKUP"].lower() == "true"
+        }
+       return config
+        
 
 def scan_directories(base_dir):
     return {os.path.normcase(name) for name in os.listdir(base_dir)}
@@ -183,7 +199,6 @@ def process_files(config):
         shows_set = scan_directories(shows_dir)
         movies_set = scan_directories(movies_dir)
         compress_and_convert_images(process_dir)
-
         for root, _, files in os.walk(process_dir):
             for file in files:
                 if file.startswith('._') or file == '.DS_Store':
