@@ -6,6 +6,12 @@ PosterPal is a simple Python script for organizing and properly renaming media a
 
 Keep in mind that this script is currently set to overwrite any existing image files, so I recommend testing it with a test folder using your file naming scheme to make sure it's working properly. Proceed at your own risk.
 
+## Future Plans
+
+   - Add Web Interface
+   - Add PMM config options for different folder structures
+   - Add backup option for destination folder
+
 ## 🛠️ Setup and Configuration
 
 1. **Install the required packages**
