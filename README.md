@@ -1,16 +1,10 @@
+# ⚠️ No Longer Maintained - Use AssetAssistant
+
+This project is no longer maintained and has been archived. I recommend using **AssetAssistant** by my good friend **mikenobbs**, which offers a superior experience. You can find it [here](https://github.com/mikenobbs/Asset-Assistant).
+
 # 🎨 PosterPal
 
 PosterPal is a simple Python script for organizing and properly renaming media artwork downloaded from sites like The Poster Database, MediUX, and more. In addition to organizing, it also optimizes/compresses the images to reduce file size. The script currently handles movies, TV shows, and episode title cards.
-
-## ⚠️ Disclaimer
-
-Keep in mind that this script is currently set to overwrite any existing image files, so I recommend testing it with a test folder using your file naming scheme to make sure it's working properly. Proceed at your own risk.
-
-## Future Plans
-
-   - Add Web Interface
-   - Add PMM config options for different folder structures
-   - Add backup option for destination folder
 
 ## 🛠️ Setup and Configuration
 
